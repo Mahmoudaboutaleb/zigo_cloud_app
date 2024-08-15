@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1088741199502",
+    "project_id": "table-e7c1c",
+    "storage_bucket": "table-e7c1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088741199502:android:bf8dc71d2e1040efca43df",
+        "android_client_info": {
+          "package_name": "com.example.tab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfFWDVodpHzyuDmhKPQ0Vf4xhfTLEplZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088741199502:android:02fe19c389324657ca43df",
+        "android_client_info": {
+          "package_name": "com.example.table"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfFWDVodpHzyuDmhKPQ0Vf4xhfTLEplZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088741199502:android:816fc2ce39eaa49cca43df",
+        "android_client_info": {
+          "package_name": "com.example.zigo_cloud_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfFWDVodpHzyuDmhKPQ0Vf4xhfTLEplZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
