@@ -1,12 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, unused_catch_stack
 
 import 'package:flutter/material.dart';
-import 'package:zigo_cloud_app/common/widgets/loading_holder.dart';
-import 'package:zigo_cloud_app/common/widgets/top_bar.dart';
-import 'package:zigo_cloud_app/main.dart';
-import 'package:zigo_cloud_app/screens/home.dart';
-import 'package:zigo_cloud_app/screens/sign_up.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zigo_cloud_app/common/colors.dart';
+import 'package:zigo_cloud_app/widgets/loading_holder.dart';
+import 'package:zigo_cloud_app/widgets/top_bar.dart';
 import 'package:zigo_cloud_app/services/firebase_services.dart';
+import 'home.dart'; // تأكد من تعديل المسار بناءً على موقع ملف home.dart
+import 'sign_up.dart'; // تأكد من تعديل المسار بناءً على موقع ملف sign_up.dart
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,13 +17,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController email = TextEditingController();
-  final TextEditingController password = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
 
+// في ملف login.dart
   Future<void> login() async {
-    if (email.text.isEmpty || password.text.isEmpty) {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter email and password')),
       );
@@ -35,46 +37,28 @@ class _LoginState extends State<Login> {
 
     try {
       final success = await FirebaseService.login(
-        email: email.text.trim(),
-        password: password.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       );
 
-      print('Login success status: $success');
-
-      if (!mounted) return;
-
       if (success) {
-        print('Navigating to Home page...');
-        await showDialog(
-          context: context,
-          builder: (ctx) {
-            return AlertDialog(
-              title: const Text('Login Successful!'),
-              content: const Text('You are now logged in.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                      (route) => false,
-                    );
-                  },
-                  child: const Text('OK'),
-                )
-              ],
-            );
-          },
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(
+            FirebaseService.EMAIL, emailController.text.trim());
+        await prefs.setString(
+            FirebaseService.PASSWORD, passwordController.text.trim());
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+          (route) => false,
         );
       } else {
-        print('Login failed');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login failed')),
         );
       }
-    } catch (e, stackTrace) {
-      debugPrint('Login error: $e');
-      debugPrint('Stack trace: $stackTrace');
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
@@ -106,13 +90,14 @@ class _LoginState extends State<Login> {
                         const Text(
                           'Log Into Your Account',
                           style: TextStyle(
+                            color: Color(0xFF351B5F),
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: email,
+                          controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             labelText: 'Email',
@@ -131,7 +116,7 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
-                          controller: password,
+                          controller: passwordController,
                           keyboardType: TextInputType.text,
                           obscureText: true,
                           decoration: InputDecoration(
@@ -156,12 +141,22 @@ class _LoginState extends State<Login> {
                             const SizedBox(width: 10),
                             TextButton(
                               onPressed: () {
-                                MainApp.navigatorKey.currentState
-                                    ?.push(MaterialPageRoute(
-                                  builder: (ctx) => const SignUp(),
-                                ));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUp(),
+                                  ),
+                                );
                               },
-                              child: const Text('Sign up'),
+                              child: const Text(
+                                'Sign up',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF351B5F),
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -170,14 +165,11 @@ class _LoginState extends State<Login> {
                           width: MediaQuery.of(context).size.width - 50,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color(0xff6D28D9), // Button color
+                              backgroundColor: ColorsWidgets.primaryColor,
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 15,
-                                  horizontal: 25), // Padding inside the button
+                                  vertical: 15, horizontal: 25),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    30), // Rounded corners
+                                borderRadius: BorderRadius.circular(30),
                               ),
                             ),
                             onPressed: () async {
@@ -208,8 +200,8 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    email.dispose();
-    password.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 }

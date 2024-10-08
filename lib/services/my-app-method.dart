@@ -1,9 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:zigo_cloud_app/products/titleTextWidget.dart';
-import 'package:zigo_cloud_app/provider/theme_provider.dart';
 
 class MyAppMethod {
   static Future<void> showErrorWarning(
@@ -72,7 +70,6 @@ class MyAppMethod {
     await showDialog(
         context: context,
         builder: (BuildContext context) {
-          final themeProvider = Provider.of<ThemeProvider>(context);
           return AlertDialog(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             shape:
@@ -104,12 +101,10 @@ class MyAppMethod {
                         color: Colors.blue,
                         size: 28,
                       ),
-                      label: TitleTextWidget(
+                      label: const TitleTextWidget(
                         label: "Camera",
                         fontSize: 18,
-                        color: themeProvider.getIsDarkTheme
-                            ? Colors.white
-                            : Colors.black,
+                        color: Color(0xFF1C1030),
                       ),
                     ),
                     TextButton.icon(
@@ -124,12 +119,10 @@ class MyAppMethod {
                           color: Colors.lightBlue,
                           size: 28,
                         ),
-                        label: TitleTextWidget(
+                        label: const TitleTextWidget(
                           label: "Gallery",
                           fontSize: 18,
-                          color: themeProvider.getIsDarkTheme
-                              ? Colors.white
-                              : Colors.black,
+                          color: Color(0xFF1C1030),
                         )),
                     TextButton.icon(
                         onPressed: () {
@@ -143,12 +136,10 @@ class MyAppMethod {
                           color: Colors.red,
                           size: 28,
                         ),
-                        label: TitleTextWidget(
+                        label: const TitleTextWidget(
                             label: "Remove",
                             fontSize: 18,
-                            color: themeProvider.getIsDarkTheme
-                                ? Colors.white
-                                : Colors.black)),
+                            color: Color(0xFF1C1030))),
                   ],
                 ),
               ],
