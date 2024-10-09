@@ -2,28 +2,38 @@ class UserModel {
   final String email;
   final String username;
   final String name;
-  final String uid; // Add the uid field here
+  final String uid;
+  final double latitude;
+  final double longitude;
+  final DateTime lastUpdated;
 
   const UserModel({
     required this.email,
     required this.name,
     required this.username,
-    required this.uid, // Include it in the constructor
+    required this.uid,
+    required this.latitude,
+    required this.longitude,
+    required this.lastUpdated,
   });
 
-  // Modify the fromJson factory to correctly parse the uid from JSON
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         email: json['email'],
         name: json['name'],
         username: json['username'],
-        uid: json['uid'], // Correctly assign uid from JSON
+        uid: json['uid'],
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        lastUpdated: DateTime.parse(json['lastUpdated']),
       );
 
-  // Ensure uid is included in the toJson method
   Map<String, dynamic> toJson() => {
         'email': email,
         'name': name,
         'username': username,
-        'uid': uid, // Include uid in the JSON representation
+        'uid': uid,
+        'latitude': latitude,
+        'longitude': longitude,
+        'lastUpdated': lastUpdated.toIso8601String(),
       };
 }

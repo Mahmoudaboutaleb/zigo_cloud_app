@@ -44,6 +44,9 @@ class FirebaseService {
         email: email,
         name: name,
         username: username,
+        latitude: 0.0,
+        longitude: 0.0,
+        lastUpdated: DateTime.now(),
       );
 
       if (cred.user != null) {
